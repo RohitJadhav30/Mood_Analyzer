@@ -19,13 +19,20 @@ public class MoodAnalyser {
 	}
 	
 	public String analyseMood() {
-        message = message.toLowerCase();
-
-        if(this.message.contains("sad")) {
-        	return "Sad";
-        }
-
-        return "HAPPY";
+		try {
+			if(message == null || message.isEmpty()){
+				throw new NullPointerException("The message cannot be null or empty");
+			}
+	        message = message.toLowerCase();
+	
+	        if(this.message.contains("sad")) {
+	        	return "Sad";
+	        }
+	        return "HAPPY";
+		}
+		catch (NullPointerException e) {
+			return "happy";
+		}
     }
 
 	public static void main(String[] args) {
@@ -38,5 +45,12 @@ public class MoodAnalyser {
         MoodAnalyser analyser2 = new MoodAnalyser();
         analyser2.setMessage("I am in Happy Mood");
         System.out.println("Test case 1.2: " + analyser2.analyseMood());
+        
+        //Test case 2.1: Handling null
+        MoodAnalyser analyser3 = new MoodAnalyser();
+        analyser2.setMessage(null);
+        System.out.println("Test case 2.1 - Null case handling: " + analyser3.analyseMood());
+
+        
     }
 }
