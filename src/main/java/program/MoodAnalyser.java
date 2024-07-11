@@ -1,4 +1,19 @@
 package program;
+
+//Exception class
+@SuppressWarnings("serial")
+class MoodAnalysisException extends Exception{
+	public MoodAnalysisException(String message) {
+		super(message);
+	}
+}
+
+//enum for differentiate mood analysis errors
+enum MoodAnalysisError {
+	NULL_OR_EMPTY_MESSAGE;
+}
+
+//mood analysis class
 public class MoodAnalyser {
     private String message;
 
@@ -18,10 +33,10 @@ public class MoodAnalyser {
 		this.message = message;
 	}
 	
-	public String analyseMood() {
+	public String analyseMood() throws MoodAnalysisException {
 		try {
 			if(message == null || message.isEmpty()){
-				throw new NullPointerException("The message cannot be null or empty");
+				throw new MoodAnalysisException("The message cannot be null or empty");
 			}
 	        message = message.toLowerCase();
 	
@@ -31,15 +46,17 @@ public class MoodAnalyser {
 	        return "HAPPY";
 		}
 		catch (NullPointerException e) {
-			return "happy";
+			throw new MoodAnalysisException("the message cannot be null or empty");
 		}
     }
 
 	public static void main(String[] args) {
-		//Test case 1.1
+		//Test case 1.1:
 		MoodAnalyser analyser1 = new MoodAnalyser();
         analyser1.setMessage("I am in Sad Mood");
-        System.out.println("Test case 1.1: " + analyser1.analyseMood());
+        try {
+			System.out.println("Test case 1.1: " + analyser1.analyseMood());
+		
 
         // Test case 1.2:
         MoodAnalyser analyser2 = new MoodAnalyser();
@@ -50,7 +67,10 @@ public class MoodAnalyser {
         MoodAnalyser analyser3 = new MoodAnalyser();
         analyser2.setMessage(null);
         System.out.println("Test case 2.1 - Null case handling: " + analyser3.analyseMood());
-
         
+        } catch (MoodAnalysisException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+
     }
 }
